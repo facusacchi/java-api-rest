@@ -20,6 +20,8 @@ import app.service.ListOfSongsService;
 @RequestMapping("/api/v1/listOfSongs")
 public class ListOfSongsController {
 	
+	private final String SUCCESS_MESSAGE = "Lista de canciones creada correctamente.";
+	
 	@Autowired
 	private ListOfSongsService listOfSongsService;
 	
@@ -36,6 +38,6 @@ public class ListOfSongsController {
 		
 		listOfSongsService.addList(body);
 		
-		return new ResponseEntity<>("Lista de canciones creada correctamente.", HttpStatus.OK);
+		return new ResponseEntity<>(SUCCESS_MESSAGE, HttpStatus.OK);
 	}
 }
