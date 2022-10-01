@@ -23,10 +23,11 @@ public class JsonMockServiceAdapter {
 	}
 	
 	public List<ListOfSongs> getLists() {
-		return gson.fromJson(jsonMockService.getActualJson(), new TypeToken<List<ListOfSongs>>(){}.getType());
+		return this.gson.fromJson(jsonMockService.getActualJson(), new TypeToken<List<ListOfSongs>>(){}.getType());
 	}
 	
-	public void setLists() {
-		
+	public void setLists(List<ListOfSongs> newList) {
+		final String json = gson.toJson(newList);
+		this.jsonMockService.setActualJson(json);
 	}
 }

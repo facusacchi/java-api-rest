@@ -16,6 +16,11 @@ public class Song {
 		this.album = album;
 	}
 	
+	public boolean hasValueInName(String value) {
+		return name.toLowerCase()
+				.contains(value.trim().toLowerCase());
+	}
+	
 	//getters and setters
 	public Long getId() {
 		return id;
