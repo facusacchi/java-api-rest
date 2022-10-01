@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//import lombok.experimental.Accessors;
+import app.service.ListOfSongsService;
 
-//@Accessors
 public class ListOfSongs {
 	
 	private Long id;
@@ -14,7 +13,6 @@ public class ListOfSongs {
 	private List<Song> songs = new ArrayList<>();
 	
 	public ListOfSongs(String name, List<Song> songs) {
-		super();
 		this.name = name;
 		this.songs = songs;
 	}
@@ -38,6 +36,10 @@ public class ListOfSongs {
 						.collect(Collectors.toList());
 	}
 	
+	public void assignIdsToSongs() {
+		this.songs.forEach(song -> song.setId(ListOfSongsService.getNextSongId()));
+	}
+	
 	// getters and setters
 	public Long getId() {
 		return id;
@@ -57,4 +59,5 @@ public class ListOfSongs {
 	public void setSongs(List<Song> songs) {
 		this.songs = songs;
 	}
+
 }

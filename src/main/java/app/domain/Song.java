@@ -8,8 +8,8 @@ public class Song {
 	private String artist;
 	private String album;
 	
+	
 	public Song(String name, String title, String artist, String album) {
-		super();
 		this.name = name;
 		this.title = title;
 		this.artist = artist;
@@ -60,5 +60,10 @@ public class Song {
 
 	public void setAlbum(String album) {
 		this.album = album;
+	}
+
+	public void assignId() {
+		// TODO Auto-generated method stub
+		
 	}
 }

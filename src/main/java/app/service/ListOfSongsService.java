@@ -19,6 +19,12 @@ import app.domain.Song;
 @Service
 public class ListOfSongsService {
 	
+	/*
+	 * Normalmente estos ids son asignados en la capa de persistencia por JPA
+	 */
+	private static Long nextListId = 999L;
+	private static Long nextSongId = 99L;
+	
 	private JsonMockServiceAdapter jsonMockServiceAdapter;
 	
 	@Autowired
@@ -31,18 +37,28 @@ public class ListOfSongsService {
 	}
 	
 	public void addList(ListOfSongs list) {
-		List<ListOfSongs> newList = this.getLists();
-		newList.add(list);
-		jsonMockServiceAdapter.setLists(newList);
+		list.setId(getNextListId());
+		list.assignIdsToSongs();
+		List<ListOfSongs> newLists = this.getLists();
+		newLists.add(list);
+		jsonMockServiceAdapter.setLists(newLists);
+	}
+	
+	private static Long getNextListId() {
+		return nextListId++;
+	}
+	
+	public static Long getNextSongId() {
+		return nextSongId++;
 	}
 	
 	public void removeList(Long listId) {
-		final List<ListOfSongs> newList = this.getLists()
+		final List<ListOfSongs> newLists = this.getLists()
 											.stream()
 											.filter(list -> list.getId() != listId)
 											.collect(Collectors.toList());
 		
-		jsonMockServiceAdapter.setLists(newList);
+		jsonMockServiceAdapter.setLists(newLists);
 	}
 
 	public List<ListOfSongs> getListsBySongId(Long songId) {
@@ -60,6 +76,7 @@ public class ListOfSongsService {
 	}
 
 	public void addSongToList(Long listId, Song song) {
+		song.setId(getNextSongId());
 		ListOfSongs listToModified = findListById(listId);
 		
 		listToModified.addSong(song);
