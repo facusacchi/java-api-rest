@@ -53,7 +53,7 @@ public class ListOfSongsService {
 	}
 	
 	public void removeList(Long listId) {
-		final List<ListOfSongs> newLists = this.getLists()
+		List<ListOfSongs> newLists = this.getLists()
 											.stream()
 											.filter(list -> list.getId() != listId)
 											.collect(Collectors.toList());
@@ -90,16 +90,21 @@ public class ListOfSongsService {
 		this.updateListsOfSongs(listId, listToModified);
 	}
 	
-	private ListOfSongs findListById(Long listId) {
+	public ListOfSongs findListById(Long listId) {
 		return this.getLists()
 				.stream()
-				.filter(list -> list.getId() == listId)
+				.filter(list -> listId.equals(list.getId()))
 				.findFirst()
 				.orElseThrow();
 	}
 	
 	private void updateListsOfSongs(Long listToModifiedId, ListOfSongs newList) {
 		this.removeList(listToModifiedId);
-		this.addList(newList);
+		newList.setId(listToModifiedId);
+		List<ListOfSongs> lists = this.getLists();
+		lists.add(newList);
+		jsonMockServiceAdapter.setLists(lists);
 	}
+	
+	
 }

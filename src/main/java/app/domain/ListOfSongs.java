@@ -12,11 +12,6 @@ public class ListOfSongs {
 	private String name;
 	private List<Song> songs = new ArrayList<>();
 	
-	public ListOfSongs(String name, List<Song> songs) {
-		this.name = name;
-		this.songs = songs;
-	}
-	
 	public boolean hasSongById(Long id) {
 		return this.songs.stream().anyMatch(song -> song.getId() == id);
 	}

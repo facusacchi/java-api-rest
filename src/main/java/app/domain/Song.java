@@ -8,14 +8,6 @@ public class Song {
 	private String artist;
 	private String album;
 	
-	
-	public Song(String name, String title, String artist, String album) {
-		this.name = name;
-		this.title = title;
-		this.artist = artist;
-		this.album = album;
-	}
-	
 	public boolean hasValueInName(String value) {
 		return name.toLowerCase()
 				.contains(value.trim().toLowerCase());
