@@ -1,9 +1,14 @@
 package app.domain;
 
-public class User {
+public class User implements Entity {
 	private String user;
 	private String pwd;
 	private String token;
+	
+	public boolean isValid() {
+		return !user.isEmpty()
+				&& !token.isEmpty();
+	}
 	
 	// getters and setters
 	public String getUser() {

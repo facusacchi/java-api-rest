@@ -1,6 +1,7 @@
 package app;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -21,6 +22,7 @@ import app.builder.ListOfSongsBuilder;
 import app.builder.SongBuilder;
 import app.domain.ListOfSongs;
 import app.domain.Song;
+import app.exception.NotFoundException;
 import app.service.ListOfSongsService;
 
 @SpringBootTest
@@ -81,6 +83,24 @@ public class ListOfSongsServiceTests {
 		ListOfSongs modifiedList = listOfSongsService.findListById(1000L);
 		
 		assertTrue(modifiedList.getSongs().isEmpty());
+	}
+	
+	@Test
+	@DisplayName("Cuando buscamos listas que contengan una determinada canción por id de canción no existente, se verifica que se lanza NotFoundException")
+	public void getListsBySongIdNotFoundTest() {
+		assertThrows(NotFoundException.class,
+	            () -> {
+	            	listOfSongsService.getListsBySongId(0L);
+	            });
+	}
+	
+	@Test
+	@DisplayName("Cuando eliminamos una canción de una lista, se verifica que se lanza NotFoundException cuando no encuentra dicha lista")
+	public void removeSongOfListNotFoundTest() {
+		assertThrows(NotFoundException.class,
+	            () -> {
+	            	listOfSongsService.removeSongOfList(0L, 1L);
+	            });
 	}
 	
 	// helper methods

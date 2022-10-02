@@ -6,11 +6,15 @@ import java.util.stream.Collectors;
 
 import app.service.ListOfSongsService;
 
-public class ListOfSongs {
+public class ListOfSongs implements Entity {
 	
 	private Long id;
 	private String name;
 	private List<Song> songs = new ArrayList<>();
+	
+	public boolean isValid() {
+		return !name.isEmpty() && !songs.isEmpty();
+	}
 	
 	public boolean hasSongById(Long id) {
 		return this.songs.stream().anyMatch(song -> song.getId() == id);

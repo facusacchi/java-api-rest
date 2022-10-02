@@ -1,12 +1,19 @@
 package app.domain;
 
-public class Song {
+public class Song implements Entity {
 	
 	private Long id;
 	private String name;
 	private String title;
 	private String artist;
 	private String album;
+	
+	public boolean isValid() {
+		return !name.isEmpty()
+				&& !title.isEmpty()
+				&& !artist.isEmpty()
+				&& !album.isEmpty();
+	}
 	
 	public boolean hasValueInName(String value) {
 		return name.toLowerCase()

@@ -18,6 +18,8 @@ import app.domain.ListOfSongs;
 import app.domain.Song;
 import app.service.ListOfSongsService;
 
+import app.builder.ValidatorBuilder;
+
 @RestController
 @RequestMapping("/api/v1/listOfSongs")
 public class ListOfSongsController {
@@ -40,6 +42,11 @@ public class ListOfSongsController {
 	@GetMapping("/lists/song/{id}")
 	public ResponseEntity<List<ListOfSongs>> getListsOfSongs(@PathVariable Long id) {
 		
+		new ValidatorBuilder()
+				.withLongPathVariableValidator(id)
+				.build()
+				.validate();
+		
 		List<ListOfSongs> listOfSongs = listOfSongsService.getListsBySongId(id);
 		
 		return new ResponseEntity<>(listOfSongs, HttpStatus.OK);
@@ -48,6 +55,11 @@ public class ListOfSongsController {
 	@GetMapping("/lists/song/name/{value}")
 	public ResponseEntity<List<ListOfSongs>> getListsOfSongs(@PathVariable String value) {
 		
+		new ValidatorBuilder()
+				.withStringPathVariableValidator(value)
+				.build()
+				.validate();
+		
 		List<ListOfSongs> listOfSongs = listOfSongsService.getListsBySongNameValue(value);
 		
 		return new ResponseEntity<>(listOfSongs, HttpStatus.OK);
@@ -55,6 +67,12 @@ public class ListOfSongsController {
 	
 	@PutMapping(value = "/update/list/{listId}/add/song")
 	public ResponseEntity<String> addSong(@PathVariable Long listId, @RequestBody Song body) {
+		
+		new ValidatorBuilder()
+				.withLongPathVariableValidator(listId)
+				.withEntityValidator(body)
+				.build()
+				.validate();
 	
 		this.listOfSongsService.addSongToList(listId, body);
 		
@@ -64,6 +82,12 @@ public class ListOfSongsController {
 	@PutMapping(value = "/update/list/{listId}/remove/song/{songId}")
 	public ResponseEntity<String> removeSong(@PathVariable Long listId, @PathVariable Long songId) {
 	
+		new ValidatorBuilder()
+				.withLongPathVariableValidator(listId)
+				.withLongPathVariableValidator(songId)
+				.build()
+				.validate();
+		
 		this.listOfSongsService.removeSongOfList(listId, songId);
 		
 		return new ResponseEntity<>(UPDATE_SUCCESS_MESSAGE, HttpStatus.OK);
@@ -72,6 +96,11 @@ public class ListOfSongsController {
 	@PostMapping(value = "/create")
 	public ResponseEntity<String> addList(@RequestBody ListOfSongs body) {
 		
+		new ValidatorBuilder()
+				.withEntityValidator(body)
+				.build()
+				.validate();
+		
 		listOfSongsService.addList(body);
 		
 		return new ResponseEntity<>(CREATE_SUCCESS_MESSAGE, HttpStatus.OK);
@@ -79,6 +108,11 @@ public class ListOfSongsController {
 	
 	@DeleteMapping(value="/delete/{id}")
 	public ResponseEntity<String> deleteList(@PathVariable Long id) {
+		
+		new ValidatorBuilder()
+				.withLongPathVariableValidator(id)
+				.build()
+				.validate();
 		
 		listOfSongsService.removeList(id);
 		

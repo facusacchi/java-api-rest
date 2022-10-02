@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import app.adapter.JsonMockServiceAdapter;
 import app.domain.ListOfSongs;
 import app.domain.Song;
+import app.exception.NotFoundException;
 
 /*
  * En una aplicación real, la mayoría de la lógica de este servicio estaría delegada en un motor de 
@@ -23,6 +24,7 @@ public class ListOfSongsService {
 	/*
 	 * Normalmente estos ids son asignados en la capa de persistencia por JPA
 	 */
+	private final String NOT_FOUND_MESSAGE = "No se encontro recurso con id ";
 	private static Long nextListId = 999L;
 	private static Long nextSongId = 99L;
 	
@@ -63,10 +65,14 @@ public class ListOfSongsService {
 	}
 
 	public List<ListOfSongs> getListsBySongId(Long songId) {
-		return this.getLists()
+		List<ListOfSongs> lists = this.getLists()
 					.stream()
 					.filter(list -> list.hasSongById(songId))
 					.collect(Collectors.toList());
+		
+		if(lists.isEmpty()) throw new NotFoundException(NOT_FOUND_MESSAGE + songId);
+		
+		return lists;
 	}
 
 	public List<ListOfSongs> getListsBySongNameValue(String value) {
@@ -85,18 +91,22 @@ public class ListOfSongsService {
 	}
 
 	public void removeSongOfList(Long listId, Long songId) {
-		ListOfSongs listToModified = findListById(listId);
+		ListOfSongs listOfSongs = findListById(listId);
 		
-		listToModified.removeSongById(songId);
-		this.updateListsOfSongs(listId, listToModified);
+		listOfSongs.removeSongById(songId);
+		this.updateListsOfSongs(listId, listOfSongs);
 	}
 	
 	public ListOfSongs findListById(Long listId) {
-		return this.getLists()
+		ListOfSongs listOfSongs = this.getLists()
 				.stream()
 				.filter(list -> listId.equals(list.getId()))
 				.findFirst()
-				.orElseThrow();
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE + listId));
+		
+		if(listOfSongs == null) throw new NotFoundException(NOT_FOUND_MESSAGE + listId);
+		
+		return listOfSongs;
 	}
 	
 	private void updateListsOfSongs(Long listToModifiedId, ListOfSongs newList) {

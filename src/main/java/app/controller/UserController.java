@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.builder.UserBuilder;
+import app.builder.ValidatorBuilder;
 import app.domain.User;
 
 import io.jsonwebtoken.Jwts;
@@ -24,6 +25,12 @@ public class UserController {
 	@PostMapping("/login")
 	public User login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
 		String token = getJWTToken(username);
+		
+		new ValidatorBuilder()
+				.withStringPathVariableValidator(username)
+				.withStringPathVariableValidator(pwd)
+				.build()
+				.validate();
 		
 		return new UserBuilder()
 						.withUser(username)
