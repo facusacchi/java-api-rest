@@ -1,4 +1,4 @@
-package app.service;
+package app.adapter;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import app.domain.ListOfSongs;
+import app.service.JsonMockService;
 
 @Component
 public class JsonMockServiceAdapter {

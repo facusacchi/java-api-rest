@@ -16,11 +16,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import app.adapter.JsonMockServiceAdapter;
 import app.builder.ListOfSongsBuilder;
 import app.builder.SongBuilder;
 import app.domain.ListOfSongs;
 import app.domain.Song;
-import app.service.JsonMockServiceAdapter;
 import app.service.ListOfSongsService;
 
 @SpringBootTest
